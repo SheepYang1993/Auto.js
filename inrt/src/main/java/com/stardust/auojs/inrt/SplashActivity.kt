@@ -53,6 +53,7 @@ class SplashActivity : AppCompatActivity() {
                 runOnUiThread {
                     Toast.makeText(this@SplashActivity, e.message, Toast.LENGTH_LONG).show()
                     startActivity(Intent(this@SplashActivity, LogActivity::class.java))
+                    overridePendingTransition(0, 0)
                     AutoJs.instance!!.globalConsole.printAllStackTrace(e)
                 }
             }
@@ -94,5 +95,9 @@ class SplashActivity : AppCompatActivity() {
         private const val INIT_TIMEOUT: Long = 2500
     }
 
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(0, 0)
+    }
 }
 
