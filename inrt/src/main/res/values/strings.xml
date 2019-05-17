@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">inrt</string>
+    <string name="app_name">抖音工具箱</string>
     <string name="text_no_accessibility_permission">无障碍服务未启动</string>
     <string name="text_auto_operate_service_enabled_but_not_running">无障碍服务已启用但没有运行，您可以尝试重新启用或重启手机</string>
     <string name="text_enable_accessibility_service_by_root_timeout">使用root权限启用无障碍服务失败</string>
@@ -19,7 +19,7 @@
     <string name="key_dont_show_main_activity">key_dont_show_main_activity</string>
     <string name="summary_dont_show_main_activity">打开应用后直接运行脚本</string>
     <string name="text_others">其他</string>
-    <string name="powered_by_autojs">Powered by Auto.js</string>
+    <string name="powered_by_autojs">Powered by SheepYang1993</string>
     <string name="text_execution_finished" formatted="false">\n------------\n[%s]运行结束，用时%f秒</string>
 
 </resources>

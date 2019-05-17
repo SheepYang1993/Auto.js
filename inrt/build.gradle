@@ -2,12 +2,17 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
+Properties keystore = new Properties()
+def pFile = file("keystore.properties")
+BufferedReader reader = pFile.newReader("UTF-8")
+keystore.load(reader)
+
 android {
     compileSdkVersion versions.compile
     buildToolsVersion versions.buildTool
 
     defaultConfig {
-        applicationId "com.stardust.auojs.inrt"
+        applicationId "com.sheepyang1993.dytools"
         minSdkVersion versions.mini
         targetSdkVersion versions.target
         versionCode versions.appVersionCode - 200
@@ -19,6 +24,18 @@ android {
         disable 'MissingTranslation'
         disable 'ExtraTranslation'
     }
+
+    signingConfigs {
+        releaseSigning {
+            storeFile file(keystore.store)
+            storePassword keystore.alias
+            keyAlias keystore.alias_password
+            keyPassword keystore.store_password
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -48,10 +65,12 @@ android {
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.releaseSigning
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.releaseSigning
         }
     }
 }
