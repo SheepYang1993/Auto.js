@@ -6,7 +6,6 @@ var dou_yin_user_id_path = "/sdcard/dou_yin_user_id.txt"
 var downloadSuccess
 
 function autoFollow() {
-
     toastLog("打开抖音短视频")
     app.launchApp("抖音短视频")
 
@@ -21,11 +20,11 @@ function autoFollow() {
     for (var i = 0; i < temp.length; i++) {
         sleep(sleep_time)
         toastLog("开始任务" + (i + 1) + ", id:" + temp[i])
-        task1(temp[i])
+        startTask(temp[i])
     }
 }
 
-function task1(sUserId) {
+function startTask(sUserId) {
     sleep(sleep_time)
     var play_nun = random(6, 7)
     toastLog("需要随机浏览" + play_nun + "个视频")
@@ -66,6 +65,25 @@ function open_main() {
         packageName: "com.ss.android.ugc.aweme",
         className: "com.ss.android.ugc.aweme.main.MainActivity"
     });
+}
+
+function getUserId() {
+    var url = "https://api2.bmob.cn/1/classes/UserId?order=-updatedAt&limit=1";
+    var res = http.get(url, {
+        headers: {
+            "X-Bmob-Application-Id": "7d95e4b7c660359c535b50cb47478673",
+            "X-Bmob-REST-API-Key": "0d10f260957a2636f8a7865f863c964c"
+        }
+    });
+    var userIdFileUrl = ""
+    if (res.statusCode == 200) {
+        var jo = res.body.json();
+        userIdFileUrl = jo.results[0].userIdFile.url
+        toastLog("请求成功:" + userIdFileUrl);
+    } else {
+        toastLog("请求失败:" + res.statusMessage);
+    }
+    return userIdFileUrl;
 }
 
 function downloadUserId(url) {
@@ -116,7 +134,19 @@ function showMainUI() {
         })
     });
     ui.btn_follow.click(() => {
-        dialogs.rawInput("请输入用户ID地址", "", function(str) {
+        var userIdUrlThread = threads.disposable();
+        threads.start(function() {
+            var userIdUrl = getUserId()
+            //通知主线程接收结果
+            userIdUrlThread.setAndNotify(userIdUrl);
+        });
+
+        var userIdUrl = userIdUrlThread.blockedGet()
+        if (userIdUrl == "") {
+            toastLog("还未获取到用户ID");
+            return
+        }
+        dialogs.rawInput("请输入用户ID地址", userIdUrl, function(str) {
             threads.start(function() {
                 downloadUserId(str)
             });

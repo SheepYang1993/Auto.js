@@ -15,8 +15,8 @@ android {
         applicationId "com.sheepyang1993.dytools"
         minSdkVersion versions.mini
         targetSdkVersion versions.target
-        versionCode versions.appVersionCode - 200
-        versionName versions.appVersionName
+        versionCode 101
+        versionName "1.0.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
