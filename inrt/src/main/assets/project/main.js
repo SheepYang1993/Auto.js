@@ -146,6 +146,7 @@ function showMainUI() {
             toastLog("还未获取到用户ID");
             return
         }
+        userIdUrl = "https://raw.githubusercontent.com/SheepYang1993/Auto.js/sheep_douyin/screen-captures/5-22-1.txt";
         dialogs.rawInput("请输入用户ID地址", userIdUrl, function(str) {
             threads.start(function() {
                 downloadUserId(str)
