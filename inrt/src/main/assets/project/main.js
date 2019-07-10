@@ -118,16 +118,37 @@ function autoWatch() {
     }
 }
 
+function getUserId(user_link){
+    var result = http.get(user_link);
+    var user_detail_url = result.url.toString();
+    var a = user_detail_url.split("?");
+    toastLog("a:" + a);
+    var b = a[0].split("user/");
+    toastLog("b:" + b);
+    var userId = b[1];
+    toastLog("userId:" + userId);
+    return userId;
+}
+
 function showMainUI() {
     ui.layout(
         <vertical>
             <appbar>
                 <toolbar id="toolbar" title="抖音工具箱" />
             </appbar>
+            <button id="btn_get_user_id" text="获取用户ID"margin = "15 0 15 0"  />
             <button id="btn_watch" text="随机浏览"margin = "15 0 15 0"  />
             <button id="btn_follow" text="随机浏览 + 自动关注"margin = "15 0 15 0" />
         </vertical>
     );
+    ui.btn_get_user_id.on("click", () => {
+        var userIdUrl = "http://v.douyin.com/k9NStv/";
+        dialogs.rawInput("请输入用户ID地址", userIdUrl, function(str) {
+            threads.start(function() {
+               var userId = getUserId(str)
+            });
+        });
+    });
     ui.btn_watch.on("click", () => {
         threads.start(function() {
             autoWatch()
